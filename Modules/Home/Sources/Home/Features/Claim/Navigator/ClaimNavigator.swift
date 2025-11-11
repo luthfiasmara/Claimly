@@ -28,8 +28,10 @@ struct DefaultClaimNavigator: ClaimNavigator {
   }
   
   func navigateToClaimDetail(from: UIViewController, claim: Claim) {
+    @Injected(\.claimViewModel) var viewModel
+    viewModel.claim = claim
     @Injected(\.claimDetailView) var nextView
-    nextView.claim = claim
+    nextView.viewModel = viewModel
     navigate(to: nextView.viewController, from: from)
   }
 }
