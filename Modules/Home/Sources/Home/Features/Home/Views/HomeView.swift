@@ -14,6 +14,8 @@ struct HomeView: WrappedView {
   var holder: WrapperHolder
   @Injected(\.homeNavigator) var navigator
   @InjectedObject(\.homeViewModel) var viewModel
+  @State private var shouldShowAlert: Bool = false
+  @State private var errorMessage: String = ""
   
   var body: some View {
     VStack {
@@ -50,7 +52,6 @@ struct HomeView: WrappedView {
           }
         }
       }
-      .padding(.horizontal, 12)
     }
     .onAppear {
       viewModel.getClaims()
@@ -67,8 +68,17 @@ struct HomeView: WrappedView {
           dismissLoading()
         }
       },
-      onFailed: { _ in
+      onFailed: { error in
+        errorMessage = error.localizedDescription
+        shouldShowAlert = true
       }
     )
+    .alert(isPresented: $shouldShowAlert) {
+      Alert(
+        title: Text("Error"),
+        message: Text(errorMessage),
+        dismissButton: .default(Text("OK"))
+      )
+    }
   }
 }
