@@ -6,6 +6,7 @@
 //
 
 import Core
+import Common
 import Factory
 
 // MARK: - View
@@ -15,7 +16,7 @@ extension Container {
   }
   
   var claimDetailView: Factory<ClaimDetailView> {
-    Factory(self) { @MainActor in ClaimDetailView(holder: self.holder())}
+    Factory(self) { @MainActor in ClaimDetailView(holder: self.holder(), viewModel: self.claimViewModel()) }
   }
 }
 
@@ -23,6 +24,10 @@ extension Container {
 extension Container {
   var homeViewModel: Factory<HomeViewModel> {
     Factory(self) { @MainActor in HomeViewModel() }
+  }
+  
+  var claimViewModel: Factory<ClaimViewModel> {
+    Factory(self) { @MainActor in ClaimViewModel() }
   }
 }
 

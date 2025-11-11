@@ -14,18 +14,50 @@ import Factory
 struct ClaimDetailView: WrappedView {
   var holder: WrapperHolder
   @Injected(\.claimNavigator) var navigator
-  @State var claim: Claim = Claim()
+  @ObservedObject var viewModel: ClaimViewModel
   
+  init(holder: WrapperHolder, viewModel: ClaimViewModel) {
+    self.holder = holder
+    self._viewModel = .init(wrappedValue: viewModel)
+  }
+
   var body: some View {
-    VStack(spacing: 0) {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 16) {
-          if let title = claim.title {
-            Text(title)
+    VStack(alignment: .leading, spacing: 16) {
+        if let id = viewModel.claim.id {
+          VStack(alignment: .leading, spacing: 8) {
+            Text("Claim ID: ")
+              .typography(theme.typography.textL.regular)
+              .foregroundColor(theme.colors.secondaryText)
+            
+            Text(id.toString())
+              .typography(theme.typography.textL.regular)
+              .foregroundColor(theme.colors.primaryText)
           }
-          Spacer()
         }
-        .padding()
+        
+        if let userId = viewModel.claim.userId {
+          VStack(alignment: .leading, spacing: 8) {
+            Text("Claimant ID : ")
+              .typography(theme.typography.textL.regular)
+              .foregroundColor(theme.colors.secondaryText)
+            
+            Text(userId.toString())
+              .typography(theme.typography.textL.regular)
+              .foregroundColor(theme.colors.primaryText)
+          }
+        }
+      
+      
+      if let title = viewModel.claim.title {
+          Text(title)
+            .typography(theme.typography.text2XL.bold)
+            .foregroundColor(theme.colors.primaryText)
+      }
+      
+      if let body = viewModel.claim.body {
+        Text(body)
+          .typography(theme.typography.textL.regular)
+          .foregroundColor(theme.colors.secondaryText)
       }
       
       Spacer()
