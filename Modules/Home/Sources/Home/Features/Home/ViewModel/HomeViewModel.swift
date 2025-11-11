@@ -14,9 +14,27 @@ import Factory
 final class HomeViewModel: ObservableObject {
   @Published var claims: DataState<[Claim]> = .initiate
   @Published var claimList: [Claim] = []
+  @Published var searchText: String = ""
+  @Published private(set) var filteredClaims: [Claim] = []
+
+  
   private var cancellable: Set<AnyCancellable> = []
 
   @Injected(\.getClaims) private var getClaimsUseCase
+  
+  init() {
+    Publishers.CombineLatest($claimList, $searchText)
+      .map { claims, searchText in
+        guard !searchText.isEmpty else { return claims }
+        return claims.filter {
+          ($0.title?.localizedCaseInsensitiveContains(searchText) ?? false)
+        }
+      }
+      .receive(on: DispatchQueue.main)
+      .assign(to: \.filteredClaims, on: self)
+      .store(in: &cancellable)
+  }
+
   
   func getClaims() {
     claims = .loading
