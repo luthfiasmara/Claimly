@@ -18,13 +18,7 @@ public struct DefaultCommonRemoteDataSource: CommonRemoteDataSource {
   public func getClaims() -> AnyPublisher<[Claim], GeneralError> {
     let api = ApiContract.anonymous(api: ClaimApi.getClaimList)
     return NetworkService.shared
-      .fetch(api: api, output: BaseClaimResponse<[Claim]>.self)
-      .tryMap { response in
-        if let data = response.data {
-          return data
-        }
-        throw GeneralError.emptyData
-      }
+      .fetch(api: api, output: [Claim].self)
       .mapError { $0.mapToGeneralError() }
       .eraseToAnyPublisher()
   }
