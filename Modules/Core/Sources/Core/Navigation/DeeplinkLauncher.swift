@@ -22,11 +22,11 @@ public extension DeeplinkLauncher {
   var supportedSchemes: [String] {
     switch AppConfig.current.environment {
     case .development:
-      return ["elportoDev", "https"]
+      return ["claimlyDev", "https"]
     case .staging:
-      return ["elportoStaging", "https"]
+      return ["claimlyStaging", "https"]
     case .production:
-      return ["elporto", "https"]
+      return ["claimly", "https"]
     }
   }
   
