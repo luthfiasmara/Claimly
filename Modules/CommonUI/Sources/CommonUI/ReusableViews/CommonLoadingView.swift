@@ -1,14 +1,13 @@
 //
-//  EraLoadingView.swift
+//  CommonLoadingView.swift
 //  CommonUI
 //
 //  Created by Luthfi Asmara on 11/11/25.
 //
 
-
 import UIKit
 
-public class EraLoadingView {
+public class CommonLoadingView {
   
   private var loadingQueueCounter: Int {
     var counter = 0

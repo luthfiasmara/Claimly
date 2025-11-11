@@ -185,3 +185,78 @@ public extension ViewWrapper {
   
   func showNoDataView() { }
 }
+
+public struct DataStateModifier<TheValue>: ViewModifier {
+  var state: DataState<TheValue>
+  var onSuccess: ((TheValue) -> Void)?
+  var onFailed: ((Error) -> Void)?
+  
+  init(state: DataState<TheValue>,
+       onSuccess: ((TheValue) -> Void)? = nil,
+       onFailed: ((Error) -> Void)? = nil) {
+    self.state = state
+    self.onSuccess = onSuccess
+    self.onFailed = onFailed
+  }
+  
+  public func body(content: Content) -> some View {
+    switch state {
+    case .loading:
+      content
+    case .success(let data):
+      let _ = onSuccess?(data)
+      content
+    case .failed(let error):
+      let _ = onFailed?(error)
+      content
+    default:
+      content
+    }
+  }
+}
+
+struct PublishedDataStateModifier<TheValue>: ViewModifier {
+    var data: Published<DataState<TheValue>>.Publisher
+    var onSuccess: ((TheValue) -> Void)?
+    var onLoading: ((Bool) -> Void)?
+    var onFailed: ((Error) -> Void)?
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(data) { state in
+                switch state {
+                case .success(let value):
+                    onLoading?(false)
+                    onSuccess?(value)
+                case .loading:
+                    onLoading?(true)
+                case .failed(let error):
+                    onLoading?(false)
+                    onFailed?(error)
+                default:
+                  onLoading?(false)
+                }
+            }
+    }
+}
+
+public extension View {
+  func dataState<TheValue>(state: DataState<TheValue>,
+                           onSuccess: ((TheValue) -> Void)? = nil,
+                           onFailed: ((Error) -> Void)? = nil) -> some View {
+    modifier(DataStateModifier(state: state,
+                               onSuccess: onSuccess,
+                               onFailed: onFailed))
+  }
+  
+  func dataState<TheValue>(
+    _ data: Published<DataState<TheValue>>.Publisher,
+    onSuccess: ((TheValue) -> Void)? = nil,
+    onLoading: ((Bool) -> Void)? = nil,
+    onFailed: ((Error) -> Void)? = nil
+  ) -> some View {
+    modifier(PublishedDataStateModifier(data: data, onSuccess: onSuccess, onLoading: onLoading, onFailed: onFailed))
+  }
+}
+
