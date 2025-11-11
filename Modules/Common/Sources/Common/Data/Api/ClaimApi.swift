@@ -8,9 +8,6 @@
 import Core
 import Foundation
 
-import Core
-import Foundation
-
 enum ClaimApi {
   case getClaimList
 }
