@@ -15,7 +15,7 @@ public struct APIConfiguration {
 // swiftlint:disable:next force_unwrapping
 extension APIConfiguration {
   static func developmentConfig() -> APIConfiguration {
-    let baseURL = URL(string: "https://api-dev.com/")
+    let baseURL = URL(string: "https://jsonplaceholder.typicode.com/")
     
     guard let baseURL = baseURL else {
       fatalError("Failed to create one or more base URLs")
