@@ -6,11 +6,12 @@
 //
 
 import Core
+import Common
 import Factory
 import UIKit
 
 protocol HomeNavigator: Navigator {
-  
+  func navigateToClaimDetail(from: UIViewController, claim: Claim)
 }
 
 struct DefaultHomeNavigator: HomeNavigator {
@@ -27,4 +28,8 @@ struct DefaultHomeNavigator: HomeNavigator {
     return UINavigationController(rootViewController: view.viewController)
   }
   
+  func navigateToClaimDetail(from: UIViewController, claim: Claim) {
+    @Injected(\.claimNavigator) var navigator
+    navigator.navigateToClaimDetail(from: from, claim: claim)
+  }
 }
