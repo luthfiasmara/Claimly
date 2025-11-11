@@ -30,6 +30,7 @@ struct LightTheme: Theme {
       rating: Color(hex: ColorPrimitives.colorNeutralGray),
       success: Color(hex: ColorPrimitives.colorSupportSuccess),
       primaryText: Color(hex: ColorPrimitives.colorNeutralDark),
+      secondaryText: Color(hex: ColorPrimitives.colorNeutralGray),
       blackText: Color(hex: ColorPrimitives.colorNeutralBlack),
       orangeAccent: Color(hex: "#EA580B")
     )

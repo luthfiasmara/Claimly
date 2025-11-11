@@ -30,6 +30,7 @@ struct DarkTheme: Theme {
       rating: Color(hex: ColorPrimitives.colorNeutralGray),
       success: Color(hex: ColorPrimitives.colorNeutralGray),
       primaryText: Color(hex: ColorPrimitives.colorNeutralDark),
+      secondaryText: Color(hex: ColorPrimitives.colorNeutralGray),
       blackText: Color(hex: ColorPrimitives.colorNeutralBlack),
       orangeAccent: Color(hex: ColorPrimitives.colorOrangeDark)
     )

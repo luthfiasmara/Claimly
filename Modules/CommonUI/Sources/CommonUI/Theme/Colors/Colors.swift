@@ -22,6 +22,7 @@ public struct Colors {
   public var rating: Color
   public var success: Color
   public var primaryText: Color
+  public var secondaryText: Color
   public var blackText: Color
   public var orangeAccent: Color
 }
